@@ -1,917 +1,787 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio of Gohar Rehman, a Backend Software Engineer specializing in scalable APIs, Python, FastAPI, PostgreSQL, Redis, and Docker.">
   <title>Gohar Rehman | Backend Software Engineer</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Tailwind Config for B&W custom aesthetics -->
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          },
-          colors: {
-            borderMuted: {
-              light: '#e5e7eb',
-              dark: '#262626'
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <!-- Google Fonts: Inter & JetBrains Mono -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    body {
-      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    }
-    /* Custom subtle grid backgrounds for high-end feel */
-    .bg-grid {
-      background-size: 40px 40px;
-      background-image: linear-gradient(to right, rgba(120, 120, 120, 0.05) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(120, 120, 120, 0.05) 1px, transparent 1px);
-    }
-    .dark .bg-grid {
-      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    }
-    /* Hide scrollbars but keep functionality */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-  </style>
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 transition-colors duration-300 font-sans selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
+<body>
 
-  <!-- Grid overlay background -->
-  <div class="fixed inset-0 bg-grid pointer-events-none z-0"></div>
-
-  <!-- Command Palette Modal -->
-  <div id="commandPalette" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-start justify-center pt-24 px-4 transition-opacity duration-200 opacity-0">
-    <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 w-full max-w-xl rounded-xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-200" id="paletteBox">
-      <div class="flex items-center border-b border-zinc-200 dark:border-zinc-800 px-4 py-3">
-        <i data-lucide="search" class="w-5 h-5 text-zinc-400 mr-3"></i>
-        <input type="text" id="paletteSearch" placeholder="Search commands, sections or social handles..." class="w-full bg-transparent border-none outline-none text-zinc-800 dark:text-zinc-100 placeholder-zinc-400 text-sm py-1">
-        <span class="text-[10px] font-mono border border-zinc-200 dark:border-zinc-800 rounded px-1.5 py-0.5 text-zinc-400 bg-zinc-50 dark:bg-zinc-950">ESC</span>
+  <!-- Loading Animation Overlay -->
+  <div class="loader-overlay" id="loaderOverlay">
+    <div class="loader-content">
+      <div class="loader-bar">
+        <div class="loader-bar-fill"></div>
       </div>
-      <div class="max-h-80 overflow-y-auto p-2" id="paletteList">
-        <!-- Dynamic Options -->
-        <button onclick="scrollToSection('about'); toggleCommandPalette();" class="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition-all text-zinc-700 dark:text-zinc-300">
-          <span class="flex items-center gap-2"><i data-lucide="user" class="w-4 h-4"></i> About Gohar Rehman</span>
-          <span class="text-xs text-zinc-400 font-mono">GOTO ABOUT</span>
-        </button>
-        <button onclick="scrollToSection('experience'); toggleCommandPalette();" class="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition-all text-zinc-700 dark:text-zinc-300">
-          <span class="flex items-center gap-2"><i data-lucide="briefcase" class="w-4 h-4"></i> Work Experience</span>
-          <span class="text-xs text-zinc-400 font-mono">GOTO WORK</span>
-        </button>
-        <button onclick="scrollToSection('skills'); toggleCommandPalette();" class="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition-all text-zinc-700 dark:text-zinc-300">
-          <span class="flex items-center gap-2"><i data-lucide="cpu" class="w-4 h-4"></i> Tech Stack & Skills</span>
-          <span class="text-xs text-zinc-400 font-mono">GOTO SKILLS</span>
-        </button>
-        <button onclick="scrollToSection('sandbox'); toggleCommandPalette();" class="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition-all text-zinc-700 dark:text-zinc-300">
-          <span class="flex items-center gap-2"><i data-lucide="terminal" class="w-4 h-4"></i> API Sandbox (Interactive)</span>
-          <span class="text-xs text-zinc-400 font-mono">GOTO SANDBOX</span>
-        </button>
-        <button onclick="toggleDarkMode(); toggleCommandPalette();" class="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition-all text-zinc-700 dark:text-zinc-300">
-          <span class="flex items-center gap-2"><i data-lucide="sun-moon" class="w-4 h-4"></i> Toggle Dark/Light Theme</span>
-          <span class="text-xs text-zinc-400 font-mono">THEME SWITCH</span>
-        </button>
-        <button onclick="copyContactDetail('goharrehmanfsd260@gmail.com', 'Email Address'); toggleCommandPalette();" class="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition-all text-zinc-700 dark:text-zinc-300">
-          <span class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4"></i> Copy Email Address</span>
-          <span class="text-xs text-zinc-400 font-mono">COPY EMAIL</span>
-        </button>
-        <button onclick="copyContactDetail('+923267343045', 'Phone Number'); toggleCommandPalette();" class="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition-all text-zinc-700 dark:text-zinc-300">
-          <span class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4"></i> Copy Phone Call Sign</span>
-          <span class="text-xs text-zinc-400 font-mono">COPY PHONE</span>
-        </button>
-        <a href="https://linkedin.com/in/iamgoharrehman" target="_blank" class="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition-all text-zinc-700 dark:text-zinc-300">
-          <span class="flex items-center gap-2"><i data-lucide="linkedin" class="w-4 h-4"></i> View LinkedIn Profile</span>
-          <span class="text-xs text-zinc-400 font-mono">LINKEDIN ↗</span>
-        </a>
-      </div>
-      <div class="bg-zinc-50 dark:bg-zinc-950/50 border-t border-zinc-100 dark:border-zinc-800 px-4 py-2 flex items-center justify-between text-xs text-zinc-400 font-mono">
-        <span>Use arrow keys to browse, Enter to select</span>
-        <span>Esc to close</span>
-      </div>
+      <span class="loader-text">Gohar Rehman</span>
     </div>
   </div>
 
-  <!-- Toast Notification System -->
-  <div id="toast" class="fixed bottom-6 right-6 z-50 translate-y-12 opacity-0 pointer-events-none transition-all duration-300 bg-zinc-900 text-zinc-100 dark:bg-white dark:text-zinc-950 px-4 py-3 rounded-xl border border-zinc-800 dark:border-zinc-200 shadow-xl flex items-center gap-3">
-    <div class="p-1 rounded-md bg-zinc-800 dark:bg-zinc-100">
-      <i data-lucide="check-circle" class="w-4 h-4 text-green-400 dark:text-green-600"></i>
-    </div>
-    <div>
-      <p class="text-xs font-mono font-bold tracking-tight" id="toastMessage">Successfully copied!</p>
-    </div>
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress-container">
+    <div class="scroll-progress-bar" id="scrollProgressBar"></div>
   </div>
 
-  <!-- Top Ribbon & Navigation -->
-  <header class="sticky top-0 z-40 backdrop-blur-md bg-zinc-50/70 dark:bg-zinc-950/70 border-b border-zinc-200 dark:border-zinc-900 transition-colors duration-300">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-4">
-        <!-- Logo -->
-        <a href="#about" class="text-base font-bold font-mono tracking-tighter flex items-center gap-2">
-          <span>GOHAR</span><span class="bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 px-1.5 py-0.5 rounded text-[10px]">REHMAN</span>
-        </a>
-        <span class="hidden md:inline-flex items-center gap-1.5 text-xs text-green-500 bg-green-500/10 px-2.5 py-0.5 rounded-full font-mono">
-          <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-          Available for Opportunities
-        </span>
-      </div>
+  <!-- Sticky Header -->
+  <header class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="#home" class="logo" aria-label="Gohar Rehman Homepage">
+        GOHAR REHMAN<span class="logo-slash">//</span>
+      </a>
 
-      <!-- Desktop Nav Options -->
-      <nav class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
-        <a href="#experience" class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors">Experience</a>
-        <a href="#skills" class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors">Tech Stack</a>
-        <a href="#sandbox" class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors">Interactive API</a>
-        <a href="#contact" class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors">Contact</a>
-      </nav>
+      <!-- Navbar Actions (Desktop Nav, Theme Toggle, Mobile Toggle) -->
+      <div class="navbar-actions">
+        <!-- Desktop Navigation Links -->
+        <nav class="desktop-nav" aria-label="Main Navigation">
+          <div class="nav-links">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#skills" class="nav-link">Skills</a>
+            <a href="#experience" class="nav-link">Experience</a>
+            <a href="#projects" class="nav-link">Projects</a>
+            <a href="#education" class="nav-link">Education</a>
+            <a href="#contact" class="nav-link">Contact</a>
+          </div>
+        </nav>
 
-      <!-- Utility triggers (Search/Pallet, Theme, Mobile Hamburger) -->
-      <div class="flex items-center gap-3">
-        <!-- Cmd+K shortcut button -->
-        <button onclick="toggleCommandPalette()" class="hidden sm:flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-500 hover:bg-zinc-200/50 dark:hover:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2.5 py-1.5 font-mono transition-all">
-          <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
-          <span>Cmd + K</span>
+        <!-- Theme Toggle Button -->
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle light/dark theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         </button>
 
-        <!-- Dark mode trigger -->
-        <button onclick="toggleDarkMode()" aria-label="Toggle Theme" class="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200/50 dark:hover:bg-zinc-900 text-zinc-600 dark:text-zinc-300 transition-all">
-          <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
-          <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
-        </button>
-
-        <!-- Mobile menu toggle -->
-        <button onclick="toggleMobileNav()" class="p-2 md:hidden rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200/50 dark:hover:bg-zinc-900 transition-all">
-          <i data-lucide="menu" id="mobileMenuIcon" class="w-4 h-4"></i>
+        <!-- Mobile Menu Button -->
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle Menu" aria-expanded="false" aria-controls="mobileNavMenu">
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
       </div>
-    </div>
-
-    <!-- Mobile Nav menu container -->
-    <div id="mobileNavMenu" class="hidden md:hidden border-b border-zinc-200 dark:border-zinc-900 bg-zinc-50 dark:bg-zinc-950 px-6 py-4 flex flex-col gap-4 animate-fadeIn">
-      <a href="#experience" onclick="toggleMobileNav()" class="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50">Experience</a>
-      <a href="#skills" onclick="toggleMobileNav()" class="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50">Tech Stack</a>
-      <a href="#sandbox" onclick="toggleMobileNav()" class="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50">Interactive API Sandbox</a>
-      <a href="#contact" onclick="toggleMobileNav()" class="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50">Contact info</a>
-      <button onclick="toggleCommandPalette(); toggleMobileNav();" class="w-full flex items-center justify-center gap-2 text-xs bg-zinc-900 dark:bg-zinc-100 text-zinc-50 dark:text-zinc-950 rounded-lg py-2.5 font-mono">
-        <i data-lucide="terminal" class="w-4 h-4"></i> Open Command Center
-      </button>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section id="about" class="relative z-10 max-w-6xl mx-auto px-6 pt-16 md:pt-24 pb-16 flex flex-col items-start gap-8">
-    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-      <!-- Title Block -->
-      <div class="lg:col-span-8 flex flex-col gap-6">
-        <p class="font-mono text-xs uppercase tracking-widest text-zinc-500">Based in Faisalabad, PK // Available globally</p>
-        <h1 class="text-4xl md:text-6xl font-bold tracking-tight leading-tight max-w-4xl">
-          Building stable, highly scalable <span class="underline underline-offset-8 decoration-1 decoration-zinc-400 dark:decoration-zinc-700">backend systems</span> to power modern products.
-        </h1>
-        <p class="text-zinc-600 dark:text-zinc-400 text-lg md:text-xl leading-relaxed max-w-3xl">
-          Hi, I am <strong class="text-zinc-950 dark:text-zinc-50 font-semibold">Gohar Rehman</strong>. A Software Engineer focused on backend development, robust API design, and schema engineering. I write Python and FastAPI code, structure database systems with PostgreSQL/NoSQL, containerize environments using Docker, and design distributed pipelines.
-        </p>
+  <!-- Mobile Navigation Menu -->
+  <div class="mobile-nav-menu" id="mobileNavMenu">
+    <a href="#home" class="mobile-nav-link">Home</a>
+    <a href="#about" class="mobile-nav-link">About</a>
+    <a href="#skills" class="mobile-nav-link">Skills</a>
+    <a href="#experience" class="mobile-nav-link">Experience</a>
+    <a href="#projects" class="mobile-nav-link">Projects</a>
+    <a href="#education" class="mobile-nav-link">Education</a>
+    <a href="#contact" class="mobile-nav-link">Contact</a>
+  </div>
 
-        <!-- Social CTAs -->
-        <div class="flex flex-wrap gap-4 mt-4">
-          <a href="#contact" class="px-5 py-3 rounded-lg bg-zinc-900 text-zinc-100 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 text-sm font-medium tracking-wide flex items-center gap-2 shadow-sm transition-all">
-            <span>Get in touch</span>
-            <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
-          </a>
-          <button onclick="toggleCommandPalette()" class="px-5 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-sm font-mono flex items-center gap-2.5 transition-all">
-            <span class="w-2 h-2 rounded-full bg-zinc-800 dark:bg-white inline-block"></span>
-            <span>Run Quick Actions</span>
-            <span class="text-[10px] text-zinc-400 border border-zinc-200 dark:border-zinc-800 px-1 rounded">⌘K</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Live Environment / Server Mock Status widget -->
-      <div class="lg:col-span-4 w-full border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 bg-zinc-50/50 dark:bg-zinc-900/30 backdrop-blur-md flex flex-col gap-6 relative overflow-hidden">
-        <div class="absolute -top-16 -right-16 w-36 h-36 bg-zinc-500/10 rounded-full blur-2xl"></div>
-        
-        <div class="flex items-center justify-between">
-          <span class="font-mono text-xs uppercase text-zinc-400">gohar@engine-01</span>
-          <span class="flex items-center gap-1.5 text-xs text-green-500 font-mono bg-green-500/5 dark:bg-green-500/10 px-2 py-0.5 rounded">
-            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-ping"></span>
-            Active
-          </span>
-        </div>
-
-        <div class="flex flex-col gap-1">
-          <span class="text-zinc-400 text-xs font-mono">Current Occupation</span>
-          <span class="text-sm font-bold">Python Developer @ Decodelabs</span>
-        </div>
-
-        <div class="flex flex-col gap-1">
-          <span class="text-zinc-400 text-xs font-mono">Education Focus</span>
-          <span class="text-sm font-medium">B.S. Software Engineering</span>
-          <span class="text-xs text-zinc-400">GCUF • March 2027</span>
-        </div>
-
-        <div class="border-t border-zinc-200 dark:border-zinc-800 pt-4 flex flex-col gap-2">
-          <span class="text-zinc-400 text-xs font-mono">Live Systems Check</span>
-          <div class="flex items-center justify-between text-xs font-mono">
-            <span>FastAPI Server</span>
-            <span class="text-emerald-500 font-bold">200 OK</span>
-          </div>
-          <div class="flex items-center justify-between text-xs font-mono">
-            <span>PostgreSQL Pool</span>
-            <span class="text-zinc-500 dark:text-zinc-400">9 active conns</span>
-          </div>
-          <div class="flex items-center justify-between text-xs font-mono">
-            <span>Redis Cache</span>
-            <span class="text-emerald-500 font-bold">HIT rate 94%</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Interactive Sandbox Section -->
-  <section id="sandbox" class="relative z-10 max-w-6xl mx-auto px-6 py-16 border-t border-zinc-200 dark:border-zinc-900">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-      <!-- Section Header -->
-      <div class="lg:col-span-4 flex flex-col gap-4">
-        <span class="font-mono text-xs uppercase tracking-widest text-zinc-400 bg-zinc-100 dark:bg-zinc-900 px-2.5 py-1 rounded w-fit">Interactive Playground</span>
-        <h2 class="text-3xl md:text-4xl font-bold tracking-tight">The Live API Playground</h2>
-        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
-          I design elegant REST endpoints. Instead of reading standard bullet points, click the endpoints on the right to interact with my server controller and fetch live structured data blocks instantly.
-        </p>
-        <div class="mt-4 flex flex-col gap-2.5 text-xs font-mono text-zinc-500">
-          <div class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-green-500"></i> No external SDKs needed</div>
-          <div class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-green-500"></i> CORS configured globally</div>
-          <div class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-green-500"></i> Dynamic response payloads</div>
-        </div>
-      </div>
-
-      <!-- Playground GUI Grid -->
-      <div class="lg:col-span-8 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden bg-white dark:bg-zinc-950/40 shadow-sm">
-        <!-- Terminal Header -->
-        <div class="bg-zinc-50 dark:bg-zinc-900/50 px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full bg-zinc-300 dark:bg-zinc-800"></span>
-            <span class="w-3 h-3 rounded-full bg-zinc-300 dark:bg-zinc-800"></span>
-            <span class="w-3 h-3 rounded-full bg-zinc-300 dark:bg-zinc-800"></span>
-            <span class="ml-2 font-mono text-xs text-zinc-500">swagger_docs.json</span>
-          </div>
-          <span class="font-mono text-[10px] bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-2 py-0.5 rounded">v2.5.0</span>
-        </div>
-
-        <!-- Interface Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-12 min-h-[380px]">
-          <!-- Endpoints -->
-          <div class="md:col-span-5 border-r border-zinc-200 dark:border-zinc-800 p-4 flex flex-col gap-2.5 bg-zinc-50/20 dark:bg-zinc-950/20">
-            <span class="text-[10px] font-mono text-zinc-400 uppercase tracking-widest block mb-1">AVAILABLE API ROUTERS</span>
+  <main>
+    <!-- 1. Hero Section -->
+    <section id="home" class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content animate-on-scroll animate-fade-up">
+            <span class="hero-tagline">Backend Systems Engineer</span>
+            <h1 class="hero-name">Gohar Rehman</h1>
+            <!-- Dynamic cursor typing target -->
+            <div class="hero-title" id="typingTarget"></div>
+            <p class="hero-subtitle">
+              Designing high-performance backend systems, robust database schemas, and highly scalable API environments. Focused on stability, low-latency, and clean code architectures.
+            </p>
             
-            <!-- Endpoint 1 -->
-            <button onclick="executeApi('system')" class="api-btn w-full text-left p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-900 dark:hover:border-zinc-100 flex items-center justify-between transition-all group active:scale-[0.98]">
-              <div class="flex flex-col">
-                <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold tracking-wider">GET /developer</span>
-                <span class="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Identity Details</span>
+            <!-- Tech Stack Icons (CDN SVGs) -->
+            <div class="hero-stack">
+              <!-- Python -->
+              <div class="hero-stack-icon" data-tech="Python">
+                <img src="https://cdn.simpleicons.org/python" alt="Python">
               </div>
-              <i data-lucide="play" class="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-50 transition-colors"></i>
-            </button>
-
-            <!-- Endpoint 2 -->
-            <button onclick="executeApi('stack')" class="api-btn w-full text-left p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-900 dark:hover:border-zinc-100 flex items-center justify-between transition-all group active:scale-[0.98]">
-              <div class="flex flex-col">
-                <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold tracking-wider">GET /developer/stack</span>
-                <span class="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Relational & Key-Value DB</span>
+              <!-- FastAPI -->
+              <div class="hero-stack-icon" data-tech="FastAPI">
+                <img src="https://cdn.simpleicons.org/fastapi" alt="FastAPI">
               </div>
-              <i data-lucide="play" class="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-50 transition-colors"></i>
-            </button>
-
-            <!-- Endpoint 3 -->
-            <button onclick="executeApi('infrastructure')" class="api-btn w-full text-left p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-900 dark:hover:border-zinc-100 flex items-center justify-between transition-all group active:scale-[0.98]">
-              <div class="flex flex-col">
-                <span class="text-[10px] font-mono text-amber-600 dark:text-amber-400 font-bold tracking-wider">POST /deploy</span>
-                <span class="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Run Docker Compose</span>
+              <!-- PostgreSQL -->
+              <div class="hero-stack-icon" data-tech="PostgreSQL">
+                <img src="https://cdn.simpleicons.org/postgresql" alt="PostgreSQL">
               </div>
-              <i data-lucide="play" class="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-50 transition-colors"></i>
-            </button>
-
-            <!-- Endpoint 4 -->
-            <button onclick="executeApi('health')" class="api-btn w-full text-left p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-900 dark:hover:border-zinc-100 flex items-center justify-between transition-all group active:scale-[0.98]">
-              <div class="flex flex-col">
-                <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold tracking-wider">GET /health</span>
-                <span class="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Performance Status</span>
+              <!-- Redis -->
+              <div class="hero-stack-icon" data-tech="Redis">
+                <img src="https://cdn.simpleicons.org/redis" alt="Redis">
               </div>
-              <i data-lucide="play" class="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-50 transition-colors"></i>
-            </button>
-          </div>
-
-          <!-- Console Output Display -->
-          <div class="md:col-span-7 p-4 bg-zinc-950 text-zinc-300 font-mono text-xs flex flex-col justify-between relative">
-            <div class="absolute top-2 right-2 flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 px-2 py-1 rounded">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-              <span class="text-[9px] text-zinc-400 uppercase tracking-widest font-mono">Response Sandbox</span>
+              <!-- Docker -->
+              <div class="hero-stack-icon" data-tech="Docker">
+                <img src="https://cdn.simpleicons.org/docker" alt="Docker">
+              </div>
+              <!-- Linux -->
+              <div class="hero-stack-icon" data-tech="Linux">
+                <img src="https://cdn.simpleicons.org/linux" alt="Linux">
+              </div>
+              <!-- Git -->
+              <div class="hero-stack-icon" data-tech="Git">
+                <img src="https://cdn.simpleicons.org/git" alt="Git">
+              </div>
+              <!-- GitHub -->
+              <div class="hero-stack-icon" data-tech="GitHub">
+                <img src="https://cdn.simpleicons.org/github" alt="GitHub">
+              </div>
+              <!-- JavaScript -->
+              <div class="hero-stack-icon" data-tech="JavaScript">
+                <img src="https://cdn.simpleicons.org/javascript" alt="JavaScript">
+              </div>
             </div>
+            
+            <div class="hero-actions">
+              <a href="#projects" class="btn btn-primary">View Projects</a>
+              <a href="#" id="downloadResumeBtn" class="btn btn-secondary">Download Resume</a>
+              <a href="#contact" class="btn btn-secondary">Contact Me</a>
+            </div>
+          </div>
+          
+          <div class="hero-shapes animate-on-scroll animate-fade-in delay-300" aria-hidden="true">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <!-- Log display container -->
-            <div class="overflow-y-auto no-scrollbar max-h-[300px] flex flex-col gap-3 pt-4">
-              <div>
-                <span class="text-zinc-500">// Initialize request state ...</span>
-                <p class="text-zinc-400 mt-1">Ready to receive payloads. Select an endpoint on the left to fire a live query.</p>
+    <!-- 2. About Section -->
+    <section id="about">
+      <div class="container">
+        <div class="section-header animate-on-scroll animate-fade-up">
+          <span class="section-label">01 // Identity</span>
+          <h2 class="section-title">About Me</h2>
+        </div>
+        
+        <div class="about-grid">
+          <div class="about-text animate-on-scroll animate-fade-up">
+            <p class="about-intro">
+              Software Engineer specializing in backend development, API design, database systems, scalable applications, and modern software architecture.
+            </p>
+            <p class="about-body">
+              Experienced with Python, FastAPI, PostgreSQL, MongoDB, Redis, Docker, Linux, Git, and GitHub. Passionate about backend engineering, distributed systems, and cloud-native applications. I build systems designed to perform efficiently under load, maintaining security and architectural clean lines.
+            </p>
+          </div>
+          
+          <div class="about-stats animate-on-scroll animate-fade-up delay-200">
+            <!-- Counter 1 -->
+            <div class="stat-item">
+              <span class="stat-number" data-target="2">0</span>
+              <span class="stat-label">Years Experience</span>
+            </div>
+            <!-- Counter 2 -->
+            <div class="stat-item">
+              <span class="stat-number" data-target="10">0</span>
+              <span class="stat-label">Projects Built</span>
+            </div>
+            <!-- Counter 3 -->
+            <div class="stat-item">
+              <span class="stat-number" data-target="15">0</span>
+              <span class="stat-label">REST APIs Developed</span>
+            </div>
+            <!-- Counter 4 -->
+            <div class="stat-item">
+              <span class="stat-number" data-target="8">0</span>
+              <span class="stat-label">Backend Delivered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Skills Section -->
+    <section id="skills">
+      <div class="container">
+        <div class="section-header animate-on-scroll animate-fade-up">
+          <span class="section-label">02 // Toolbox</span>
+          <h2 class="section-title">Technical Skills</h2>
+        </div>
+        
+        <div class="skills-grid">
+          <!-- Backend -->
+          <div class="skill-category-card animate-on-scroll animate-fade-up">
+            <h3 class="skill-category-name">Backend</h3>
+            <div class="skill-list">
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">Python</span>
+                  <span class="skill-level">90%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="90%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">FastAPI</span>
+                  <span class="skill-level">85%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="85%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">REST APIs</span>
+                  <span class="skill-level">95%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="95%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">Authentication (OAuth2/JWT)</span>
+                  <span class="skill-level">85%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="85%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">API Documentation</span>
+                  <span class="skill-level">90%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="90%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Databases -->
+          <div class="skill-category-card animate-on-scroll animate-fade-up delay-100">
+            <h3 class="skill-category-name">Databases</h3>
+            <div class="skill-list">
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">PostgreSQL</span>
+                  <span class="skill-level">85%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="85%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">MongoDB</span>
+                  <span class="skill-level">75%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="75%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">Redis Caching</span>
+                  <span class="skill-level">80%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="80%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">Database Design</span>
+                  <span class="skill-level">85%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="85%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- DevOps -->
+          <div class="skill-category-card animate-on-scroll animate-fade-up delay-200">
+            <h3 class="skill-category-name">DevOps</h3>
+            <div class="skill-list">
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">Docker</span>
+                  <span class="skill-level">80%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="80%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">Linux Environments</span>
+                  <span class="skill-level">85%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="85%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">Git</span>
+                  <span class="skill-level">90%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="90%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">GitHub Workflows</span>
+                  <span class="skill-level">85%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="85%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Programming -->
+          <div class="skill-category-card animate-on-scroll animate-fade-up delay-300">
+            <h3 class="skill-category-name">Programming</h3>
+            <div class="skill-list">
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">Python</span>
+                  <span class="skill-level">90%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="90%"></div>
+                </div>
+              </div>
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">JavaScript</span>
+                  <span class="skill-level">70%</span>
+                </div>
+                <div class="skill-progress-bg">
+                  <div class="skill-progress-bar" data-level="70%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Experience Section -->
+    <section id="experience">
+      <div class="container">
+        <div class="section-header animate-on-scroll animate-fade-up">
+          <span class="section-label">03 // Track Record</span>
+          <h2 class="section-title">Experience</h2>
+        </div>
+        
+        <div class="timeline">
+          <!-- Timeline Card -->
+          <div class="timeline-item animate-on-scroll animate-fade-up">
+            <div class="timeline-dot"></div>
+            <div class="timeline-header">
+              <h3 class="timeline-role">Backend Developer</h3>
+              <span class="timeline-date">2024 - Present</span>
+            </div>
+            <span class="timeline-company">Independent / Self-Employed</span>
+            <p class="timeline-desc">
+              Building and maintaining production-grade backends using Python and FastAPI. Responsible for database architecture, API designs, and optimizing cache hits.
+            </p>
+            <ul class="timeline-details">
+              <li class="timeline-detail-item">Developed backend applications using Python and FastAPI</li>
+              <li class="timeline-detail-item">Built RESTful APIs supporting complex search queries and transactions</li>
+              <li class="timeline-detail-item">Designed PostgreSQL and MongoDB databases, ensuring data consistency</li>
+              <li class="timeline-detail-item">Implemented authentication systems (JWT, OAuth2 flows)</li>
+              <li class="timeline-detail-item">Utilized Redis caching layers to reduce database load and reduce latency</li>
+              <li class="timeline-detail-item">Containerized applications with Docker to streamline deployment pipelines</li>
+              <li class="timeline-detail-item">Managed projects using Git and GitHub workflows</li>
+              <li class="timeline-detail-item">Worked in Linux environments for server orchestration</li>
+              <li class="timeline-detail-item">Focused on scalable software architecture and modular patterns</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Featured Projects Section -->
+    <section id="projects">
+      <div class="container">
+        <div class="section-header animate-on-scroll animate-fade-up">
+          <span class="section-label">04 // Works</span>
+          <h2 class="section-title">Featured Projects</h2>
+        </div>
+        
+        <div class="projects-grid">
+          <!-- Project 1 -->
+          <div class="project-card animate-on-scroll animate-fade-up">
+            <div>
+              <h3 class="project-title">API Gateway Service</h3>
+              <p class="project-desc">
+                High-performance API gateway with custom rate limiting, request routing, header manipulation, and robust JWT validation protocols.
+              </p>
+              <div class="project-stack">
+                <span class="project-badge">Python</span>
+                <span class="project-badge">FastAPI</span>
+                <span class="project-badge">Redis</span>
+                <span class="project-badge">Docker</span>
+              </div>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/gohardev260" class="project-link-btn" target="_blank" rel="noopener">
+                GitHub
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <a href="#" class="project-link-btn" target="_blank" rel="noopener">
+                Demo
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+          
+          <!-- Project 2 -->
+          <div class="project-card animate-on-scroll animate-fade-up delay-100">
+            <div>
+              <h3 class="project-title">Authentication System</h3>
+              <p class="project-desc">
+                OAuth2 and JWT compliant authorization microservice, managing secure password hashing, MFA, user sessions, and database integrations.
+              </p>
+              <div class="project-stack">
+                <span class="project-badge">Python</span>
+                <span class="project-badge">FastAPI</span>
+                <span class="project-badge">PostgreSQL</span>
+                <span class="project-badge">Redis</span>
+              </div>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/gohardev260" class="project-link-btn" target="_blank" rel="noopener">
+                GitHub
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <a href="#" class="project-link-btn" target="_blank" rel="noopener">
+                Demo
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+          
+          <!-- Project 3 -->
+          <div class="project-card animate-on-scroll animate-fade-up delay-200">
+            <div>
+              <h3 class="project-title">Task Management Backend</h3>
+              <p class="project-desc">
+                Scalable task management endpoint architecture featuring task prioritizing, async work queue operations, and status tracking.
+              </p>
+              <div class="project-stack">
+                <span class="project-badge">Python</span>
+                <span class="project-badge">FastAPI</span>
+                <span class="project-badge">Redis</span>
+                <span class="project-badge">PostgreSQL</span>
+              </div>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/gohardev260" class="project-link-btn" target="_blank" rel="noopener">
+                GitHub
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <a href="#" class="project-link-btn" target="_blank" rel="noopener">
+                Demo
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+          
+          <!-- Project 4 -->
+          <div class="project-card animate-on-scroll animate-fade-up">
+            <div>
+              <h3 class="project-title">E-Commerce Backend</h3>
+              <p class="project-desc">
+                Dynamic transaction engine supporting product catalogs, atomic checkout pipelines, shopping cart memory, and order dispatch workflows.
+              </p>
+              <div class="project-stack">
+                <span class="project-badge">Python</span>
+                <span class="project-badge">FastAPI</span>
+                <span class="project-badge">PostgreSQL</span>
+                <span class="project-badge">Docker</span>
+              </div>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/gohardev260" class="project-link-btn" target="_blank" rel="noopener">
+                GitHub
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <a href="#" class="project-link-btn" target="_blank" rel="noopener">
+                Demo
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+          
+          <!-- Project 5 -->
+          <div class="project-card animate-on-scroll animate-fade-up delay-100">
+            <div>
+              <h3 class="project-title">Redis Cache Layer</h3>
+              <p class="project-desc">
+                High-performance cache synchronization plugin that optimizes complex database reads and maintains real-time object state.
+              </p>
+              <div class="project-stack">
+                <span class="project-badge">Python</span>
+                <span class="project-badge">Redis</span>
+                <span class="project-badge">Git</span>
+              </div>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/gohardev260" class="project-link-btn" target="_blank" rel="noopener">
+                GitHub
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <a href="#" class="project-link-btn" target="_blank" rel="noopener">
+                Demo
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+          
+          <!-- Project 6 -->
+          <div class="project-card animate-on-scroll animate-fade-up delay-200">
+            <div>
+              <h3 class="project-title">Microservices Architecture</h3>
+              <p class="project-desc">
+                Distributed message exchange network communicating asynchronously across Docker-contained server environments.
+              </p>
+              <div class="project-stack">
+                <span class="project-badge">Python</span>
+                <span class="project-badge">Docker</span>
+                <span class="project-badge">Linux</span>
+                <span class="project-badge">Git</span>
+              </div>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/gohardev260" class="project-link-btn" target="_blank" rel="noopener">
+                GitHub
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <a href="#" class="project-link-btn" target="_blank" rel="noopener">
+                Demo
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Technology Showcase -->
+    <section id="showcase">
+      <div class="container">
+        <div class="section-header animate-on-scroll animate-fade-up">
+          <span class="section-label">05 // Ecosystem</span>
+          <h2 class="section-title">Technology Showcase</h2>
+        </div>
+        
+        <div class="showcase-grid animate-on-scroll animate-scale-in">
+          <!-- Python -->
+          <div class="showcase-item">
+            <img src="https://cdn.simpleicons.org/python" alt="Python">
+            <span class="showcase-name">Python</span>
+            <div class="showcase-tooltip">Python Language</div>
+          </div>
+          <!-- FastAPI -->
+          <div class="showcase-item">
+            <img src="https://cdn.simpleicons.org/fastapi" alt="FastAPI">
+            <span class="showcase-name">FastAPI</span>
+            <div class="showcase-tooltip">FastAPI Framework</div>
+          </div>
+          <!-- PostgreSQL -->
+          <div class="showcase-item">
+            <img src="https://cdn.simpleicons.org/postgresql" alt="PostgreSQL">
+            <span class="showcase-name">PostgreSQL</span>
+            <div class="showcase-tooltip">PostgreSQL DB</div>
+          </div>
+          <!-- MongoDB -->
+          <div class="showcase-item">
+            <img src="https://cdn.simpleicons.org/mongodb" alt="MongoDB">
+            <span class="showcase-name">MongoDB</span>
+            <div class="showcase-tooltip">MongoDB NoSQL</div>
+          </div>
+          <!-- Redis -->
+          <div class="showcase-item">
+            <img src="https://cdn.simpleicons.org/redis" alt="Redis">
+            <span class="showcase-name">Redis</span>
+            <div class="showcase-tooltip">Redis Cache</div>
+          </div>
+          <!-- Docker -->
+          <div class="showcase-item">
+            <img src="https://cdn.simpleicons.org/docker" alt="Docker">
+            <span class="showcase-name">Docker</span>
+            <div class="showcase-tooltip">Docker Orchestration</div>
+          </div>
+          <!-- Linux -->
+          <div class="showcase-item">
+            <img src="https://cdn.simpleicons.org/linux" alt="Linux">
+            <span class="showcase-name">Linux</span>
+            <div class="showcase-tooltip">Linux OS</div>
+          </div>
+          <!-- Git -->
+          <div class="showcase-item">
+            <img src="https://cdn.simpleicons.org/git" alt="Git">
+            <span class="showcase-name">Git</span>
+            <div class="showcase-tooltip">Git Version Control</div>
+          </div>
+          <!-- GitHub -->
+          <div class="showcase-item">
+            <img src="https://cdn.simpleicons.org/github" alt="GitHub">
+            <span class="showcase-name">GitHub</span>
+            <div class="showcase-tooltip">GitHub Portal</div>
+          </div>
+          <!-- JavaScript -->
+          <div class="showcase-item">
+            <img src="https://cdn.simpleicons.org/javascript" alt="JavaScript">
+            <span class="showcase-name">JavaScript</span>
+            <div class="showcase-tooltip">JavaScript Web</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Education Section -->
+    <section id="education">
+      <div class="container">
+        <div class="section-header animate-on-scroll animate-fade-up">
+          <span class="section-label">06 // Academic</span>
+          <h2 class="section-title">Education</h2>
+        </div>
+        
+        <div class="education-timeline">
+          <div class="education-card animate-on-scroll animate-fade-up">
+            <div class="education-main">
+              <span class="education-school">Government College University Faisalabad</span>
+              <h3 class="education-degree">Bachelor of Software Engineering</h3>
+            </div>
+            <div class="education-meta">
+              <span class="education-year">2023 – 2027</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Contact Section -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-header animate-on-scroll animate-fade-up">
+          <span class="section-label">07 // Connections</span>
+          <h2 class="section-title">Get In Touch</h2>
+        </div>
+        
+        <div class="contact-grid">
+          <div class="contact-info animate-on-scroll animate-fade-up">
+            <p>
+              I am open to new job opportunities, freelance work, and general collaboration queries. Reach out via the form, or direct channels below.
+            </p>
+            
+            <div class="contact-detail-list">
+              <!-- Email -->
+              <div class="contact-detail-item">
+                <div class="contact-icon-box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+                <div>
+                  <span class="contact-detail-title">Email</span>
+                  <div class="contact-detail-value">
+                    <a href="mailto:goharrehmanfsd260@gmail.com">goharrehmanfsd260@gmail.com</a>
+                  </div>
+                </div>
+              </div>
+              <!-- LinkedIn -->
+              <div class="contact-detail-item">
+                <div class="contact-icon-box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </div>
+                <div>
+                  <span class="contact-detail-title">LinkedIn</span>
+                  <div class="contact-detail-value">
+                    <a href="https://linkedin.com/in/iamgoharrehman" target="_blank" rel="noopener">linkedin.com/in/iamgoharrehman</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Website -->
+              <div class="contact-detail-item">
+                <div class="contact-icon-box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                </div>
+                <div>
+                  <span class="contact-detail-title">Website</span>
+                  <div class="contact-detail-value">
+                    <a href="https://github.com/gohardev260" target="_blank" rel="noopener">github.com/gohardev260</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Contact Form -->
+          <div class="contact-form-container animate-on-scroll animate-fade-up delay-200">
+            <form class="contact-form" id="contactForm" action="https://formspree.io/f/mqeoqqrn" method="POST" novalidate>
+              <div class="form-group">
+                <label for="formName" class="form-label">Name</label>
+                <input type="text" id="formName" name="name" class="form-input" required placeholder="Your Name">
+                <span class="form-error" id="nameError">Please enter your name.</span>
               </div>
               
-              <!-- Target for generated responses -->
-              <pre id="apiConsoleOutput" class="text-zinc-100 font-mono whitespace-pre-wrap select-all selection:bg-zinc-800 selection:text-white leading-relaxed"></pre>
-            </div>
-
-            <!-- Console controls footer -->
-            <div class="border-t border-zinc-900 pt-3 flex items-center justify-between text-[10px] text-zinc-500">
-              <span>Status: <span id="apiStatusText" class="text-zinc-400">IDLE</span></span>
-              <span>Bytes: <span id="apiSizeText">0b</span></span>
-            </div>
+              <div class="form-group">
+                <label for="formEmail" class="form-label">Email</label>
+                <input type="email" id="formEmail" name="email" class="form-input" required placeholder="Your Email">
+                <span class="form-error" id="emailError">Please enter a valid email address.</span>
+              </div>
+              
+              <div class="form-group">
+                <label for="formSubject" class="form-label">Subject</label>
+                <input type="text" id="formSubject" name="_subject" class="form-input" required placeholder="Inquiry Subject">
+                <span class="form-error" id="subjectError">Please enter a subject.</span>
+              </div>
+              
+              <div class="form-group">
+                <label for="formMessage" class="form-label">Message</label>
+                <textarea id="formMessage" name="message" class="form-textarea" required placeholder="How can I help you?"></textarea>
+                <span class="form-error" id="messageError">Please enter a message.</span>
+              </div>
+              
+              <div class="form-message-status" id="formStatus"></div>
+              
+              <button type="submit" class="btn btn-primary form-submit-btn">Send Message</button>
+            </form>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <!-- Work Experience Timeline Section -->
-  <section id="experience" class="relative z-10 max-w-6xl mx-auto px-6 py-16 border-t border-zinc-200 dark:border-zinc-900">
-    <div class="flex flex-col gap-12">
-      <!-- Section header -->
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div class="flex flex-col gap-3">
-          <span class="font-mono text-xs uppercase tracking-widest text-zinc-400 bg-zinc-100 dark:bg-zinc-900 px-2.5 py-1 rounded w-fit">Track Record</span>
-          <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Work History</h2>
+  <!-- 9. Elegant Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-container">
+        <div class="footer-info">
+          <span class="footer-name">Gohar Rehman</span>
+          <span class="footer-title">Software Engineer // Backend Specialist</span>
         </div>
-        <p class="text-zinc-600 dark:text-zinc-400 text-sm max-w-md">
-          Focusing on highly performant application layers, clean design schemas, microservices, and continuous integration pipelines.
-        </p>
-      </div>
-
-      <!-- Timeline Block -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-4 relative">
-        <!-- Center line on large screens -->
-        <div class="hidden lg:block absolute left-4 top-0 bottom-0 w-[1px] bg-zinc-200 dark:bg-zinc-800"></div>
-
-        <!-- Experience Card 1 -->
-        <div class="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-6 relative">
-          <!-- Timeline point icon -->
-          <div class="hidden lg:flex absolute left-4 -translate-x-1/2 w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 items-center justify-center text-zinc-900 dark:text-white z-10">
-            <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
-          </div>
-
-          <div class="lg:col-span-3 lg:pl-10">
-            <span class="text-sm font-semibold block">Decodelabs</span>
-            <span class="font-mono text-xs text-zinc-400">June 2026 - Present</span>
-            <span class="text-[10px] uppercase font-bold tracking-wider text-zinc-500 bg-zinc-100 dark:bg-zinc-900 px-2 py-0.5 rounded block w-fit mt-1">Faisalabad, PK</span>
-          </div>
-
-          <div class="lg:col-span-9 flex flex-col gap-3 border border-zinc-200 dark:border-zinc-800/80 rounded-xl p-6 bg-white/50 dark:bg-zinc-900/10 hover:border-zinc-400 dark:hover:border-zinc-700 transition-all">
-            <h3 class="text-lg font-bold text-zinc-900 dark:text-zinc-50">Python Developer</h3>
-            <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Assisted in structural design and deployment of backend RESTful architectures. Worked hands-on across standard server-side application layers, API validations, and databases.
-            </p>
-            <ul class="flex flex-col gap-2 text-xs text-zinc-500 dark:text-zinc-400 font-mono mt-2 list-none">
-              <li class="flex items-center gap-2"><span class="w-1 h-1 bg-zinc-800 dark:bg-white rounded-full"></span> Collaborated with engineering teams using clean Git and branching strategies.</li>
-              <li class="flex items-center gap-2"><span class="w-1 h-1 bg-zinc-800 dark:bg-white rounded-full"></span> Conducted rigid testing routines, unit testing modules, and debugging cycles.</li>
-              <li class="flex items-center gap-2"><span class="w-1 h-1 bg-zinc-800 dark:bg-white rounded-full"></span> Learned production-scale architectures focusing on low latency and low data footprint.</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Experience Card 2 -->
-        <div class="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-6 relative">
-          <!-- Timeline point icon -->
-          <div class="hidden lg:flex absolute left-4 -translate-x-1/2 w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 items-center justify-center text-zinc-900 dark:text-white z-10">
-            <i data-lucide="code" class="w-3.5 h-3.5"></i>
-          </div>
-
-          <div class="lg:col-span-3 lg:pl-10">
-            <span class="text-sm font-semibold block">Independent Engineering</span>
-            <span class="font-mono text-xs text-zinc-400">Dec 2023 - Present</span>
-            <span class="text-[10px] uppercase font-bold tracking-wider text-zinc-500 bg-zinc-100 dark:bg-zinc-900 px-2 py-0.5 rounded block w-fit mt-1">Pakistan</span>
-          </div>
-
-          <div class="lg:col-span-9 flex flex-col gap-3 border border-zinc-200 dark:border-zinc-800/80 rounded-xl p-6 bg-white/50 dark:bg-zinc-900/10 hover:border-zinc-400 dark:hover:border-zinc-700 transition-all">
-            <h3 class="text-lg font-bold text-zinc-900 dark:text-zinc-50">Backend Developer</h3>
-            <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Engineered data pipelines and high-velocity server frameworks. Developed, documented, and tested comprehensive database-driven projects utilizing optimized cache mechanisms.
-            </p>
-            <ul class="flex flex-col gap-2 text-xs text-zinc-500 dark:text-zinc-400 font-mono mt-2 list-none">
-              <li class="flex items-center gap-2"><span class="w-1 h-1 bg-zinc-800 dark:bg-white rounded-full"></span> Crafted clean, validated schemas with FastAPI, PostgreSQL, and robust Pydantic data modeling.</li>
-              <li class="flex items-center gap-2"><span class="w-1 h-1 bg-zinc-800 dark:bg-white rounded-full"></span> Developed caching protocols with Redis reducing database lookups by up to 60%.</li>
-              <li class="flex items-center gap-2"><span class="w-1 h-1 bg-zinc-800 dark:bg-white rounded-full"></span> Formulated Dockerized environments to match production settings cleanly.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Technical Competencies / Skills Section -->
-  <section id="skills" class="relative z-10 max-w-6xl mx-auto px-6 py-16 border-t border-zinc-200 dark:border-zinc-900">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-      <!-- Header Column -->
-      <div class="lg:col-span-4 flex flex-col gap-4">
-        <span class="font-mono text-xs uppercase tracking-widest text-zinc-400 bg-zinc-100 dark:bg-zinc-900 px-2.5 py-1 rounded w-fit">Tech Stack Map</span>
-        <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Backend Toolbox</h2>
-        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
-          I rely on modular tools that prioritize reliability, simple state management, rapid processing, and container security.
-        </p>
-
-        <!-- Dynamic Filter controls -->
-        <div class="flex flex-wrap gap-2 mt-4">
-          <button onclick="filterSkills('all')" class="skill-tab-btn active px-3 py-1.5 rounded-lg border border-zinc-900 dark:border-white text-xs font-mono font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 transition-all">All Tools</button>
-          <button onclick="filterSkills('language')" class="skill-tab-btn px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-mono text-zinc-500 dark:text-zinc-400 hover:border-zinc-500 transition-all">Languages</button>
-          <button onclick="filterSkills('backend')" class="skill-tab-btn px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-mono text-zinc-500 dark:text-zinc-400 hover:border-zinc-500 transition-all">Core Frameworks</button>
-          <button onclick="filterSkills('database')" class="skill-tab-btn px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-mono text-zinc-500 dark:text-zinc-400 hover:border-zinc-500 transition-all">Storage & Databases</button>
-        </div>
-      </div>
-
-      <!-- Skills Grid -->
-      <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="skillsGridContainer">
-        <!-- Python -->
-        <div class="skill-card border border-zinc-200 dark:border-zinc-800 p-5 rounded-xl flex flex-col gap-3 hover:bg-zinc-100/30 dark:hover:bg-zinc-900/10 transition-all" data-category="language">
-          <div class="flex items-center justify-between">
-            <span class="p-2 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold font-mono text-xs">PY</span>
-            <span class="text-[10px] font-mono uppercase text-zinc-400">Core</span>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold">Python Programming</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Multi-paradigm language used for high-end server architecture and algorithms.</p>
-          </div>
-        </div>
-
-        <!-- FastAPI -->
-        <div class="skill-card border border-zinc-200 dark:border-zinc-800 p-5 rounded-xl flex flex-col gap-3 hover:bg-zinc-100/30 dark:hover:bg-zinc-900/10 transition-all" data-category="backend">
-          <div class="flex items-center justify-between">
-            <span class="p-2 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold font-mono text-xs">FAPI</span>
-            <span class="text-[10px] font-mono uppercase text-zinc-400">Framework</span>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold">FastAPI</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Asynchronous API construction with automatic data validation via Pydantic.</p>
-          </div>
-        </div>
-
-        <!-- PostgreSQL -->
-        <div class="skill-card border border-zinc-200 dark:border-zinc-800 p-5 rounded-xl flex flex-col gap-3 hover:bg-zinc-100/30 dark:hover:bg-zinc-900/10 transition-all" data-category="database">
-          <div class="flex items-center justify-between">
-            <span class="p-2 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold font-mono text-xs">SQL</span>
-            <span class="text-[10px] font-mono uppercase text-zinc-400">Database</span>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold">PostgreSQL</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Relational schema design, normalization, indexes, and complex raw query logic.</p>
-          </div>
-        </div>
-
-        <!-- Supabase -->
-        <div class="skill-card border border-zinc-200 dark:border-zinc-800 p-5 rounded-xl flex flex-col gap-3 hover:bg-zinc-100/30 dark:hover:bg-zinc-900/10 transition-all" data-category="database">
-          <div class="flex items-center justify-between">
-            <span class="p-2 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold font-mono text-xs">SUPA</span>
-            <span class="text-[10px] font-mono uppercase text-zinc-400">Database</span>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold">Supabase</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">BaaS tool integrating secure PostgreSQL instances, triggers, and Row Level Security.</p>
-          </div>
-        </div>
-
-        <!-- Redis -->
-        <div class="skill-card border border-zinc-200 dark:border-zinc-800 p-5 rounded-xl flex flex-col gap-3 hover:bg-zinc-100/30 dark:hover:bg-zinc-900/10 transition-all" data-category="database">
-          <div class="flex items-center justify-between">
-            <span class="p-2 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold font-mono text-xs">RDS</span>
-            <span class="text-[10px] font-mono uppercase text-zinc-400">In-Memory</span>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold">Redis</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Key-value caching arrays, session tokens, and performance optimizations.</p>
-          </div>
-        </div>
-
-        <!-- Docker -->
-        <div class="skill-card border border-zinc-200 dark:border-zinc-800 p-5 rounded-xl flex flex-col gap-3 hover:bg-zinc-100/30 dark:hover:bg-zinc-900/10 transition-all" data-category="backend">
-          <div class="flex items-center justify-between">
-            <span class="p-2 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold font-mono text-xs">DOC</span>
-            <span class="text-[10px] font-mono uppercase text-zinc-400">DevOps</span>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold">Docker Containerization</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Building isolated container systems for microservices and reproducible dev steps.</p>
-          </div>
-        </div>
-
-        <!-- JavaScript -->
-        <div class="skill-card border border-zinc-200 dark:border-zinc-800 p-5 rounded-xl flex flex-col gap-3 hover:bg-zinc-100/30 dark:hover:bg-zinc-900/10 transition-all" data-category="language">
-          <div class="flex items-center justify-between">
-            <span class="p-2 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold font-mono text-xs">JS</span>
-            <span class="text-[10px] font-mono uppercase text-zinc-400">Frontend</span>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold">JavaScript</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Interfacing APIs with modern web interfaces, standard state management, and custom DOM handling.</p>
-          </div>
-        </div>
-
-        <!-- MongoDB -->
-        <div class="skill-card border border-zinc-200 dark:border-zinc-800 p-5 rounded-xl flex flex-col gap-3 hover:bg-zinc-100/30 dark:hover:bg-zinc-900/10 transition-all" data-category="database">
-          <div class="flex items-center justify-between">
-            <span class="p-2 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold font-mono text-xs">MDB</span>
-            <span class="text-[10px] font-mono uppercase text-zinc-400">NoSQL</span>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold">MongoDB</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Document store for rapidly evolving non-relational business structures and JSON models.</p>
-          </div>
-        </div>
-
-        <!-- Git/GitHub -->
-        <div class="skill-card border border-zinc-200 dark:border-zinc-800 p-5 rounded-xl flex flex-col gap-3 hover:bg-zinc-100/30 dark:hover:bg-zinc-900/10 transition-all" data-category="backend">
-          <div class="flex items-center justify-between">
-            <span class="p-2 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold font-mono text-xs">GIT</span>
-            <span class="text-[10px] font-mono uppercase text-zinc-400">VCS</span>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold">Git & Workflows</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Rigid version control, descriptive pull requests, issues tracking, and trunk development.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Education Section -->
-  <section id="education" class="relative z-10 max-w-6xl mx-auto px-6 py-16 border-t border-zinc-200 dark:border-zinc-900">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-      <div class="lg:col-span-4 flex flex-col gap-4">
-        <span class="font-mono text-xs uppercase tracking-widest text-zinc-400 bg-zinc-100 dark:bg-zinc-900 px-2.5 py-1 rounded w-fit">Foundation</span>
-        <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Academic Base</h2>
-        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
-          Nurturing structural software engineering principles, design systems, architectural theory, and advanced computations.
-        </p>
-      </div>
-
-      <div class="lg:col-span-8 border border-zinc-200 dark:border-zinc-800 rounded-xl p-8 bg-white/50 dark:bg-zinc-900/10 flex flex-col md:flex-row gap-6 items-start md:items-center justify-between hover:border-zinc-400 dark:hover:border-zinc-700 transition-all">
-        <div class="flex flex-col gap-2">
-          <span class="text-xs uppercase font-mono tracking-wider text-zinc-400">Government College University, Faisalabad</span>
-          <h3 class="text-xl font-extrabold tracking-tight">Bachelor of Software Engineering</h3>
-          <p class="text-sm text-zinc-500 dark:text-zinc-400 font-medium">Courses focus: Software Architecture, Database Systems, Network Engineering, and Object-Oriented Design.</p>
-        </div>
-        <div class="flex flex-col items-end shrink-0">
-          <span class="font-mono text-sm font-bold text-zinc-800 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800">2023 - 2027</span>
-          <span class="text-[10px] text-zinc-400 font-mono mt-1">In progress</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Interactive Contact Section -->
-  <section id="contact" class="relative z-10 max-w-6xl mx-auto px-6 py-16 border-t border-zinc-200 dark:border-zinc-900 mb-16">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-      <div class="lg:col-span-5 flex flex-col gap-6">
-        <span class="font-mono text-xs uppercase tracking-widest text-zinc-400 bg-zinc-100 dark:bg-zinc-900 px-2.5 py-1 rounded w-fit">Get in Touch</span>
-        <h2 class="text-3xl md:text-5xl font-bold tracking-tight">Let's build reliable platforms together.</h2>
-        <p class="text-zinc-600 dark:text-zinc-400 text-base leading-relaxed">
-          Whether you need a full-time engineer to scale your data architecture, migrate databases securely, or consult on a fast API wrapper, reach out directly.
-        </p>
-
-        <div class="flex flex-col gap-3 font-mono text-xs text-zinc-500">
-          <div class="flex items-center gap-3">
-            <i data-lucide="map-pin" class="w-4 h-4 text-zinc-900 dark:text-white"></i>
-            <span>Faisalabad, Punjab, Pakistan</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <i data-lucide="clock" class="w-4 h-4 text-zinc-900 dark:text-white"></i>
-            <span>Active UTC+5 Timezone</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Contact Interactive Block -->
-      <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        
-        <!-- Direct Email Card -->
-        <div class="border border-zinc-200 dark:border-zinc-800 p-6 rounded-xl flex flex-col justify-between gap-6 hover:border-zinc-400 dark:hover:border-zinc-700 bg-white/50 dark:bg-zinc-900/10 transition-all">
-          <div class="flex flex-col gap-2">
-            <div class="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-800 dark:text-zinc-200">
-              <i data-lucide="mail" class="w-5 h-5"></i>
-            </div>
-            <h3 class="text-base font-bold mt-2">Email Identity</h3>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400">Send an inquiry or formal RFPs directly to my inbox.</p>
-          </div>
-          <button onclick="copyContactDetail('goharrehmanfsd260@gmail.com', 'Email Address')" class="w-full py-2.5 px-3 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-200 dark:text-zinc-950 text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all">
-            <span>goharrehmanfsd260@gmail.com</span>
-            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-          </button>
-        </div>
-
-        <!-- Phone Identity Card -->
-        <div class="border border-zinc-200 dark:border-zinc-800 p-6 rounded-xl flex flex-col justify-between gap-6 hover:border-zinc-400 dark:hover:border-zinc-700 bg-white/50 dark:bg-zinc-900/10 transition-all">
-          <div class="flex flex-col gap-2">
-            <div class="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-800 dark:text-zinc-200">
-              <i data-lucide="phone" class="w-5 h-5"></i>
-            </div>
-            <h3 class="text-base font-bold mt-2">Direct Phone</h3>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400">Available for urgent engineering syncs or calls.</p>
-          </div>
-          <button onclick="copyContactDetail('+923267343045', 'Phone Number')" class="w-full py-2.5 px-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all">
-            <span>+92 326 7343045</span>
-            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-          </button>
-        </div>
-
-        <!-- Social Portals Card -->
-        <div class="sm:col-span-2 border border-zinc-200 dark:border-zinc-800 p-6 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-zinc-50 dark:bg-zinc-900/30">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center text-zinc-800 dark:text-zinc-200">
-              <i data-lucide="linkedin" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h4 class="text-sm font-bold">LinkedIn Connectivity</h4>
-              <p class="text-xs text-zinc-500 dark:text-zinc-400">Connect to network or read written engineering reviews.</p>
-            </div>
-          </div>
-          <a href="https://linkedin.com/in/iamgoharrehman" target="_blank" class="w-full md:w-auto py-2.5 px-5 text-center rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-200 dark:text-zinc-950 text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all">
-            <span>Connect on LinkedIn</span>
-            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+        <div class="footer-links">
+          <a href="mailto:goharrehmanfsd260@gmail.com" class="footer-link-icon" aria-label="Send Email">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </a>
+          <a href="https://github.com/gohardev260" class="footer-link-icon" target="_blank" aria-label="GitHub Profile" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          </a>
+          <a href="https://linkedin.com/in/iamgoharrehman" class="footer-link-icon" target="_blank" aria-label="LinkedIn Profile" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
           </a>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Elegant Footer -->
-  <footer class="border-t border-zinc-200 dark:border-zinc-900 bg-zinc-100/50 dark:bg-zinc-950/60 py-12 relative z-10 transition-colors duration-300">
-    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="flex flex-col gap-1 text-center md:text-left">
-        <span class="font-bold tracking-tight text-sm font-mono">GOHAR REHMAN</span>
-        <span class="text-xs text-zinc-400">High-performance Backend Architectures • Faisalabad, PK</span>
-      </div>
-
-      <div class="flex items-center gap-6 text-xs text-zinc-500 font-mono">
-        <button onclick="scrollToSection('about')" class="hover:text-zinc-900 dark:hover:text-white transition-colors">Top ↑</button>
-        <span class="text-zinc-300 dark:text-zinc-800">|</span>
-        <button onclick="toggleCommandPalette()" class="hover:text-zinc-900 dark:hover:text-white transition-colors">Terminal Actions (⌘K)</button>
-        <span class="text-zinc-300 dark:text-zinc-800">|</span>
-        <span>© 2026. All rights reserved.</span>
+        
+        <div class="footer-copy">
+          <span>&copy; 2026 Gohar Rehman. All rights reserved.</span>
+          <span>Designed with absolute contrast and minimalism.</span>
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- Script logics (Theme management, Mock APIs, Search palette, Copy, filters) -->
-  <script>
-    // Initialize Lucide Icons
-    lucide.createIcons();
-
-    // Scroll to element helper
-    function scrollToSection(id) {
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-
-    // Toggle Mobile Navigation
-    function toggleMobileNav() {
-      const menu = document.getElementById('mobileNavMenu');
-      const isHidden = menu.classList.contains('hidden');
-      if (isHidden) {
-        menu.classList.remove('hidden');
-      } else {
-        menu.classList.add('hidden');
-      }
-    }
-
-    // Toggle Dark Mode
-    function toggleDarkMode() {
-      const html = document.documentElement;
-      if (html.classList.contains('dark')) {
-        html.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-      } else {
-        html.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-      }
-    }
-
-    // Respect user theme preferences
-    if (localStorage.getItem('theme') === 'light') {
-      document.documentElement.classList.remove('dark');
-    } else {
-      document.documentElement.classList.add('dark');
-    }
-
-    // Command Palette Logic
-    const cmdPalette = document.getElementById('commandPalette');
-    const paletteBox = document.getElementById('paletteBox');
-    const paletteSearch = document.getElementById('paletteSearch');
-
-    function toggleCommandPalette() {
-      const isHidden = cmdPalette.classList.contains('hidden');
-      if (isHidden) {
-        cmdPalette.classList.remove('hidden');
-        setTimeout(() => {
-          cmdPalette.classList.remove('opacity-0');
-          paletteBox.classList.remove('scale-95');
-          paletteSearch.focus();
-        }, 50);
-      } else {
-        cmdPalette.classList.add('opacity-0');
-        paletteBox.classList.add('scale-95');
-        setTimeout(() => {
-          cmdPalette.classList.add('hidden');
-        }, 150);
-      }
-    }
-
-    // Keyboard trigger (Ctrl+K or Cmd+K / Escape)
-    document.addEventListener('keydown', function (e) {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        toggleCommandPalette();
-      }
-      if (e.key === 'Escape' && !cmdPalette.classList.contains('hidden')) {
-        toggleCommandPalette();
-      }
-    });
-
-    // Close palette on backdrop tap
-    cmdPalette.addEventListener('click', function(e) {
-      if (e.target === cmdPalette) {
-        toggleCommandPalette();
-      }
-    });
-
-    // Live search inside command palette
-    paletteSearch.addEventListener('input', function(e) {
-      const query = e.target.value.toLowerCase();
-      const buttons = document.querySelectorAll('#paletteList button, #paletteList a');
-      
-      buttons.forEach(btn => {
-        const text = btn.textContent.toLowerCase();
-        if (text.includes(query)) {
-          btn.style.display = 'flex';
-        } else {
-          btn.style.display = 'none';
-        }
-      });
-    });
-
-    // Simple toast & copying mechanic
-    function copyContactDetail(textToCopy, label) {
-      // Create a temporary element to copy the text safely for iframe compliance
-      const tempInput = document.createElement('textarea');
-      tempInput.value = textToCopy;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      document.execCommand('copy');
-      document.body.removeChild(tempInput);
-
-      // Trigger Toast notification
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toastMessage');
-      toastMsg.innerHTML = `${label} copied successfully!`;
-      
-      toast.classList.remove('translate-y-12', 'opacity-0', 'pointer-events-none');
-      
-      setTimeout(() => {
-        toast.classList.add('translate-y-12', 'opacity-0', 'pointer-events-none');
-      }, 3000);
-    }
-
-    // Filter Skills logic
-    function filterSkills(category) {
-      // Set active state on button
-      const buttons = document.querySelectorAll('.skill-tab-btn');
-      buttons.forEach(btn => {
-        btn.classList.remove('active', 'bg-zinc-900', 'text-white', 'dark:bg-white', 'dark:text-zinc-900');
-        btn.classList.add('border-zinc-200', 'dark:border-zinc-800', 'text-zinc-500', 'dark:text-zinc-400');
-      });
-
-      const currentBtn = event.currentTarget;
-      if (currentBtn) {
-        currentBtn.classList.remove('border-zinc-200', 'dark:border-zinc-800', 'text-zinc-500', 'dark:text-zinc-400');
-        currentBtn.classList.add('active', 'bg-zinc-900', 'text-white', 'dark:bg-white', 'dark:text-zinc-900');
-      }
-
-      const cards = document.querySelectorAll('.skill-card');
-      cards.forEach(card => {
-        if (category === 'all' || card.getAttribute('data-category') === category) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
-    // Mock Backend Endpoints API Sandbox Logic
-    const apiResponses = {
-      system: {
-        status_code: 200,
-        headers: {
-          "Content-Type": "application/json",
-          "X-Process-Time": "0.0012s"
-        },
-        payload: {
-          developer_identity: {
-            first_name: "Gohar",
-            last_name: "Rehman",
-            current_role: "Backend Systems Developer",
-            origin: "Faisalabad, Pakistan",
-            languages: ["English", "Urdu", "Punjabi"],
-            motto: "Clean architecture, robust schema structures, low latency."
-          }
-        }
-      },
-      stack: {
-        status_code: 200,
-        headers: {
-          "Content-Type": "application/json",
-          "X-Cached-By": "Redis"
-        },
-        payload: {
-          frameworks: ["FastAPI", "Python", "Node.js (optional)"],
-          primary_databases: {
-            relational: "PostgreSQL",
-            nosql: "MongoDB",
-            baas: "Supabase"
-          },
-          in_memory: ["Redis Cache", "RabbitMQ Message Brokers"],
-          infrastructure: ["Docker Engine", "Git/GitHub Actions", "Linux Environment (Ubuntu)"]
-        }
-      },
-      infrastructure: {
-        status_code: 201,
-        headers: {
-          "Content-Type": "application/json",
-          "X-Docker-Host": "Engine-01-PK"
-        },
-        payload: {
-          deployment: "triggered",
-          container_metadata: {
-            "web_app": "UP - 0.0.0.0:8000",
-            "db_instance": "UP - PostgreSQL 16.2 on port 5432",
-            "caching_layer": "UP - Redis cluster status OK",
-            "volumes": ["postgres_data", "redis_state"]
-          },
-          deployment_time_seconds: 0.841,
-          log_output: "Container orchestration completed successfully. Health checked."
-        }
-      },
-      health: {
-        status_code: 200,
-        headers: {
-          "Content-Type": "application/json",
-          "Server-Status": "Nominal"
-        },
-        payload: {
-          uptime: "99.98%",
-          endpoints_checked: 12,
-          critical_alerts: 0,
-          ping_ms: 14.2,
-          env_vars: {
-            DEBUG: "False",
-            PORT: "8000",
-            DATABASE_URL: "postgresql://******:******@db.gohar.local/main"
-          }
-        }
-      }
-    };
-
-    function executeApi(endpoint) {
-      const consoleOutput = document.getElementById('apiConsoleOutput');
-      const statusText = document.getElementById('apiStatusText');
-      const sizeText = document.getElementById('apiSizeText');
-      
-      // Simulate high-speed latency network delay (for realistic feels!)
-      consoleOutput.innerHTML = `<span class="text-yellow-400 font-bold animate-pulse">// Sending request parameters...</span>`;
-      statusText.innerHTML = "WAITING";
-      statusText.className = "text-yellow-500 font-bold";
-
-      setTimeout(() => {
-        const responseObj = apiResponses[endpoint];
-        const stringified = JSON.stringify(responseObj, null, 2);
-        
-        consoleOutput.innerHTML = stringified;
-        statusText.innerHTML = responseObj.status_code === 201 || responseObj.status_code === 200 ? "200 OK" : "ERR";
-        statusText.className = "text-green-400 font-bold";
-        sizeText.innerHTML = (stringified.length / 1024).toFixed(3) + " KB";
-      }, 350);
-    }
-  </script>
+  <!-- Custom Scripts -->
+  <script src="script.js"></script>
 </body>
 </html>
