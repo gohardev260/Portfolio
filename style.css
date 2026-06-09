@@ -174,6 +174,7 @@ button, input, textarea {
   display: flex;
   align-items: center;
   gap: var(--space-8);
+  white-space: nowrap;
 }
 
 .logo-slash {
@@ -1371,6 +1372,14 @@ section {
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 992px) {
+  .hero {
+    height: auto;
+    min-height: 100vh;
+    padding-top: calc(var(--header-height) + var(--space-48));
+    padding-bottom: var(--space-64);
+    position: relative;
+  }
+
   .hero-grid {
     grid-template-columns: 1fr;
     gap: var(--space-64);
@@ -1380,6 +1389,21 @@ section {
 
   .hero-content {
     align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-shapes {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 400px;
+    height: 380px;
+    z-index: 1;
+    opacity: 0.15;
+    pointer-events: none;
   }
 
   .hero-title {
@@ -1409,6 +1433,22 @@ section {
     grid-template-columns: 1fr;
     gap: var(--space-48);
   }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .navbar-actions {
+    gap: var(--space-16);
+  }
+
+  .theme-toggle-btn {
+    margin-right: 6px;
+  }
+
+  .mobile-nav-toggle {
+    display: flex;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1421,20 +1461,12 @@ section {
     padding: var(--space-64) 0;
   }
 
+  #contact {
+    padding-bottom: var(--space-96);
+  }
+
   .section-title {
     font-size: 1.75rem;
-  }
-
-  .desktop-nav {
-    display: none;
-  }
-
-  .navbar-actions {
-    gap: var(--space-16);
-  }
-
-  .mobile-nav-toggle {
-    display: flex;
   }
 
   .timeline::before {
@@ -1457,9 +1489,48 @@ section {
   .education-meta {
     text-align: left;
   }
+
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-24);
+  }
+
+  .footer-copy {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-8);
+  }
 }
 
 @media (max-width: 480px) {
+  .navbar-container {
+    padding: 0 var(--space-16);
+  }
+
+  .navbar-actions {
+    gap: var(--space-12);
+  }
+
+  .logo {
+    font-size: 1.05rem;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    gap: var(--space-12);
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
   .about-stats {
     grid-template-columns: 1fr;
     gap: var(--space-16);
@@ -1474,6 +1545,7 @@ section {
   }
 
   .showcase-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: var(--space-12);
   }
 }
